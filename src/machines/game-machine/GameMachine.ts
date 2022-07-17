@@ -1,7 +1,23 @@
 import {createModel} from "xstate/lib/model";
 import {GameContext, GridState, Player, GameState} from "./GameType";
-import {canDropToken, canJoinGuard, canLeaveGuard, isWinningGuard} from "./GameGuard";
-import {dropTokenAction, joinGameAction, leaveGameAction, switchUserAction} from "./GameAction";
+import {
+    canChooseColor,
+    canDropToken,
+    canJoinGuard,
+    canLeaveGuard,
+    canStartGame,
+    isTight,
+    isWinningGuard
+} from "./GameGuard";
+import {
+    chooseColorAction,
+    dropTokenAction,
+    joinGameAction,
+    leaveGameAction,
+    restartAction,
+    setCurrentPlayerAction,
+    switchUserAction
+} from "./GameAction";
 import {interpret} from "xstate";
 
 
@@ -48,16 +64,27 @@ export const GameMachine = GameModel.createMachine({
                     actions : [GameModel.assign(leaveGameAction)]
                 },
                 chooseColor : {
-                    target : GameState.LOBBY
+                    cond: canChooseColor,
+                    target : GameState.LOBBY,
+                    actions: [GameModel.assign(chooseColorAction)]
                 },
                 start : {
-                    target : GameState.PLAY
+                    cond: canStartGame,
+                    target : GameState.PLAY,
+                    actions: [GameModel.assign(setCurrentPlayerAction)]
                 }
             }
         },
         [GameState.PLAY] : {
             on : {
                 dropToken : [
+                    {
+                        cond : isTight,
+                        target : GameState.TIGHT,
+                        actions : [
+                            GameModel.assign(dropTokenAction),
+                        ]
+                    },
                     {
                         cond : isWinningGuard,
                         target : GameState.WIN,
@@ -72,21 +99,23 @@ export const GameMachine = GameModel.createMachine({
                             GameModel.assign(dropTokenAction),
                             GameModel.assign(switchUserAction)
                         ]
-                    }
+                    },
                 ]
             }
         },
         [GameState.WIN] : {
             on : {
                 restart : {
-                    target : GameState.LOBBY
+                    target : GameState.LOBBY,
+                    actions: [GameModel.assign(restartAction)]
                 }
             }
         },
         [GameState.TIGHT] : {
             on : {
                 restart : {
-                    target : GameState.LOBBY
+                    target : GameState.LOBBY,
+                    actions: [GameModel.assign(restartAction)]
                 }
             }
         }

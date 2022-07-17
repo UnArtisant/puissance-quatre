@@ -1,5 +1,6 @@
 import {GameAction, GameContext} from "./GameType";
 import {freePostionY} from "../../func/game";
+import {GameModel} from "./GameMachine";
 
 export const joinGameAction : GameAction<"join"> = (context, event) => ({
     players : [...context.players, {id : event.playerId, name : event.playerName}]
@@ -24,5 +25,22 @@ export const dropTokenAction : GameAction<"dropToken"> = ({grid, players}, {x : 
 export const switchUserAction = (context : GameContext) => {
     return {
         currentPlayer : context.players.find(p => p.id !== context.currentPlayer)!.id
+    }
+}
+
+export const restartAction : GameAction<"restart"> = () => ({
+    grid : GameModel.initialContext.grid,
+    currentPlayer: null,
+})
+
+export const setCurrentPlayerAction = (context : GameContext) => {
+    return {
+        currentPlayer: context.players[0]!.id
+    }
+}
+
+export const chooseColorAction : GameAction<"chooseColor"> = ({players} , {playerId, color}) => {
+    return {
+        players: players.map(player => (player.id === playerId ? {...player, color} : player))
     }
 }

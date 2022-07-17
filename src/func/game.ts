@@ -24,10 +24,10 @@ export function winningPostion(grid: GridState, x: number, color: PlayersColors,
     for (let direction of directions) {
         let items = [position]
         for (let forward of [-1, 1]) {
-            for (let i = 1; i++; i < size) {
+            for (let i = 1; i < size; i++) {
                 const y = position.y + (i * direction[1] * forward)
                 const x = position.x + (i * direction[0] * forward)
-                if (grid[y][x] !== color) {
+                if (grid?.[y]?.[x] !== color) {
                     break
                 }
                 items.push({x, y})
@@ -47,4 +47,18 @@ export function currentPlayer (context: GameContext) : Player {
         throw new Error("no player found")
     }
     return player
+}
+
+export function countEmptyCell(grid: GridState) {
+    let count = 0;
+
+    for (let row of grid) {
+        for(let val of row) {
+            if(val === "E") {
+                count++
+            }
+        }
+    }
+
+    return count
 }
