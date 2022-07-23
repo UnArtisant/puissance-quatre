@@ -1,5 +1,5 @@
 import {createModel} from "xstate/lib/model";
-import {GameContext, GridState, Player, GameState} from "./GameType";
+import {GameContext, GridState, Player, GameState} from "../../lib/types/GameType";
 import {
     canChooseColor,
     canDropToken,

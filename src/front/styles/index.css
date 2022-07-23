@@ -1,3 +1,11 @@
+:root {
+    --yellow : #ffb000;
+    --darker-yellow: #da9a0b;
+    --red : #fe0000;
+    --darker-red: #dc0b0b;
+    --blue : #0284e1;
+}
+
 .players {
     display: flex;
     align-items: center;
@@ -8,4 +16,59 @@
     display: flex;
     align-items: center;
     gap: .25rem;
+    margin-bottom: .5rem;
+}
+
+.disc {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+}
+
+.disc-red {
+    background-color: var(--red);
+    border: 3px solid var(--red);
+    box-shadow: inset 0 0 0 3px var(--darker-red);
+    outline: solid 1px var(--darker-red);
+}
+
+.disc-yellow {
+    background-color: var(--yellow);
+    border: 3px solid var(--yellow);
+    box-shadow: inset 0 0 0 3px var(--darker-yellow);
+    outline: solid 1px var(--darker-yellow);
+}
+
+.selector {
+    display: flex;
+    gap: .75rem;
+}
+
+.selector .disc {
+    width: 75px;
+    height: 75px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    grid-auto-rows: repeat(var(--rows), 1fr);
+    aspect-ratio: var(--cols) / var(--rows);
+    background-color: var(--blue);
+    background: radial-gradient(circle, transparent, transparent 50.99%, var(--blue) 51%, var(--blue) 100%);
+    background-size: calc(100% / var(--cols)) calc(100% / var(--rows));
+    place-items: center;
+}
+
+.grid .disc {
+    z-index: -1;
+    width: 80%;
+    height: 80%;
+    animation: Drop calc(.2s * var(--row));
+}
+
+@keyframes Drop {
+    from {
+        transform: translateY(calc(-125% * var(--row)));
+    }
 }

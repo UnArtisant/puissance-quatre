@@ -1,4 +1,4 @@
-import {CellEmpty, GameContext, GridState, Player, PlayersColors} from "../machines/game-machine/GameType";
+import {GameContext, GridState, Player, PlayersColors} from "../types/GameType";
 
 export function freePostionY(grid: GridState, x: number): number {
     const yLenght: number = grid.length - 1

@@ -1,5 +1,5 @@
 import {ContextFrom, EventFrom} from "xstate";
-import {GameModel} from "./GameMachine";
+import {GameModel} from "../../machines/game-machine/GameMachine";
 
 export enum PlayersColors {
     RED = "R",

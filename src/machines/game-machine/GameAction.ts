@@ -1,5 +1,5 @@
-import {GameAction, GameContext} from "./GameType";
-import {freePostionY} from "../../func/game";
+import {GameAction, GameContext} from "../../lib/types/GameType";
+import {freePostionY} from "../../lib/func/game";
 import {GameModel} from "./GameMachine";
 
 export const joinGameAction : GameAction<"join"> = (context, event) => ({
