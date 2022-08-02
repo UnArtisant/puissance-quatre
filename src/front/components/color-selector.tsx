@@ -1,14 +1,14 @@
-import {Player, PlayersColors} from "../../../lib/types/GameType";
-import {discColor} from "../../../lib/func/color";
+import {Player, PlayersColors} from "../../lib/types/GameType";
+import {discColor} from "../../lib/func/color";
 
 type ColorSelectorProps = {
-    onSelect: (color: string) => void,
+    onSelect: (color: PlayersColors) => void,
     players: Player[],
     colors : PlayersColors[]
 }
 
 
-function Index({onSelect, players, colors}: ColorSelectorProps) {
+function ColorSelector({onSelect, players, colors}: ColorSelectorProps) {
 
     return (
         <>
@@ -19,7 +19,7 @@ function Index({onSelect, players, colors}: ColorSelectorProps) {
                 </div>)}
 
             </div>
-            <hr/>
+            {players.length ? <hr/> : null}
             <h3>Select color</h3>
             <div className="selector">
                 {colors.map((color,k) => (<button onClick={() => onSelect(color)} key={k} className={discColor(color)} />))}
@@ -28,4 +28,4 @@ function Index({onSelect, players, colors}: ColorSelectorProps) {
     );
 }
 
-export default Index;
+export default ColorSelector;

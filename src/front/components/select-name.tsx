@@ -2,10 +2,10 @@ import React, {FormEvent, useState} from 'react';
 
 type SelectNameProps = {
     onSelect : (name : string) => void,
-    disabled : boolean
+    disabled ?: boolean
 }
 
-function Index({onSelect, disabled} : SelectNameProps) {
+function SelectName({onSelect, disabled} : SelectNameProps) {
 
     const [errors, setErrors] = useState('')
 
@@ -19,6 +19,7 @@ function Index({onSelect, disabled} : SelectNameProps) {
         }
 
         onSelect(name!.toString())
+        e.currentTarget.name.value = ""
     }
 
     return (
@@ -39,4 +40,4 @@ function Index({onSelect, disabled} : SelectNameProps) {
     );
 }
 
-export default Index;
+export default SelectName;

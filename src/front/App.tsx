@@ -1,36 +1,28 @@
-import SelectName from "./container/select-name";
-import ColorSelector from "./container/color-selector";
-import {PlayersColors} from "../lib/types/GameType";
-import Grid from "./container/grid/grid";
+import {GameState} from "../lib/types/GameType";
+import {useGame} from "./hooks/useGame";
+import LobbyScreens from "./container/lobbyScreens";
+import PlayScreens from "./container/playScreens";
+import Grid from "./components/grid";
+import {currentPlayer} from "../lib/func/game";
+import VictoryScreens from "./container/victoryScreens";
 
 function App() {
+    const {state, context, send} = useGame()
+
+    const canDrop = state === GameState.PLAY
+    const player = canDrop ? currentPlayer(context) : {}
+    const dropToken = canDrop ? (x : number) => send({type: "dropToken", x}) : undefined
     return (
         <div className="container">
-            <SelectName disabled onSelect={(e) => console.log(e)}/>
-            <hr/>
-            <ColorSelector colors={[PlayersColors.RED, PlayersColors.YELLOW]}
-                           onSelect={(e) => console.log(e)}
-                           players={[
-                               {
-                                   id: "1",
-                                   name: "john",
-                                   color: PlayersColors.RED
-                               },
-                               {
-                                   id: "2",
-                                   name: "doe",
-                                   color: PlayersColors.YELLOW
-                               }
-                           ]}/>
-            <hr/>
-            <Grid grid={[
-                ["E", "E", "E", "E", "E", "E", "Y"],
-                ["E", "E", "E", "E", "E", "R", "R"],
-                ["E", "E", "E", "E", "E", "R", "Y"],
-                ["E", "E", "E", "E", "E", "R", "R"],
-                ["E", "E", "E", "E", "E", "Y", "Y"],
-                ["E", "E", "E", "E", "E", "Y", "R"]
-            ]} />
+
+            {state === GameState.LOBBY && <LobbyScreens />}
+            {state === GameState.PLAY && <PlayScreens />}
+            {state === GameState.WIN && <VictoryScreens />}
+            {/** TODO Tight screen */}
+            {state === GameState.TIGHT && <VictoryScreens />}
+
+            <Grid  onDrop={dropToken} color={player?.color} grid={context.grid}  />
+
         </div>
     )
 }
