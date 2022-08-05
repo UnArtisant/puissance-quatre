@@ -19,6 +19,12 @@ export type Player = {
     color?: PlayersColors
 }
 
+export type PlayerSession = {
+    id : string,
+    name: string,
+    signature : string,
+}
+
 export type CellEmpty = "E"
 export type CellState = PlayersColors.RED | PlayersColors.YELLOW | CellEmpty | "R" | "Y"
 export type GridState = CellState[][]
