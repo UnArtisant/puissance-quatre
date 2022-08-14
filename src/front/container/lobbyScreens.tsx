@@ -5,18 +5,22 @@ import {useGame} from "../hooks/useGame";
 import {prevent} from "../../lib/func/dom";
 import LoginScreens from "./loginScreens";
 
+
 type LobbyScreensProps = {}
 
 function LobbyScreens({}: LobbyScreensProps) {
-    const {send, context, can, playerId} = useGame()
+    const {send, context, can, state} = useGame()
 
-    const selectColor = (color: PlayersColors) => send({type: "chooseColor", color, playerId : color === PlayersColors.RED ? "john" : "marc"})
+    const selectColor = (color: PlayersColors) => send({
+        type: "chooseColor",
+        color,
+    })
     const startGame = () => send({type: "start"})
     const canStart = can({type: "start"})
 
-    if(!playerId) {
+    if (!state) {
         return <div>
-            <LoginScreens />
+            <LoginScreens/>
         </div>
     }
 
@@ -25,7 +29,7 @@ function LobbyScreens({}: LobbyScreensProps) {
 
             <ColorSelector colors={[PlayersColors.RED, PlayersColors.YELLOW]}
                            onSelect={selectColor}
-                           players={context.players}/>
+                           players={context!.players}/>
             <p>
                 <button disabled={!canStart} onClick={prevent(startGame)}>Lancer la partie</button>
             </p>

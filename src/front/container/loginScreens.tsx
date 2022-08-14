@@ -1,11 +1,16 @@
 import React from 'react';
-import {PlayerSession} from "../../lib/types/GameType";
+import {PlayerSession, QueryParams} from "../../lib/types/GameType";
 import {saveSession} from "../func/session";
 import SelectName from "../components/select-name";
+import {useGame} from "../hooks/useGame";
+import {updateUrlParams, urlParams} from "../func/url";
+import {v4} from "uuid";
 
 type LogingScreensProps = {}
 
-export function LoginScreens({} : LogingScreensProps) {
+export function LoginScreens({}: LogingScreensProps) {
+
+    const {connect} = useGame()
 
     const joinGame = async (name: string) => {
         const data: PlayerSession = await fetch("/api/players", {method: "POST"}).then(r => r.json())
@@ -14,7 +19,9 @@ export function LoginScreens({} : LogingScreensProps) {
             name
         }
         saveSession(player)
-        //send({type: "join", playerName: name, playerId: name})
+        const gameId = urlParams().get(QueryParams.GAMEID) ?? v4()
+        connect(player, gameId)
+        updateUrlParams({[QueryParams.GAMEID]: gameId})
     }
 
     return (

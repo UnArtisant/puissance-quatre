@@ -1,6 +1,7 @@
 import { generateKeyPairSync } from "crypto";
 import {writeFileSync} from "fs";
 
+// @ts-ignore
 const {privateKey} = generateKeyPairSync("rsa",{
     modulusLength : 2048,
     privateKeyEncoding : {

@@ -10,18 +10,19 @@ function App() {
     const {state, context, send} = useGame()
 
     const canDrop = state === GameState.PLAY
-    const player = canDrop ? currentPlayer(context) : {}
+    const player = canDrop ? currentPlayer(context!) : {}
     const dropToken = canDrop ? (x : number) => send({type: "dropToken", x}) : undefined
+
     return (
         <div className="container">
 
-            {state === GameState.LOBBY && <LobbyScreens />}
+             <LobbyScreens />
             {state === GameState.PLAY && <PlayScreens />}
             {state === GameState.WIN && <VictoryScreens />}
             {/** TODO Tight screen */}
             {state === GameState.TIGHT && <VictoryScreens />}
 
-            <Grid  onDrop={dropToken} color={player?.color} grid={context.grid}  />
+            {state && <Grid  onDrop={dropToken} color={player?.color} grid={context!.grid}  />}
 
         </div>
     )
